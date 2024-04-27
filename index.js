@@ -24,22 +24,13 @@ app.get('/api/hello', function (req, res) {
   res.json({ greeting: 'hello API' });
 });
 
-app.get("/api", (req, res) => {
-  const now = new Date();
-  res.json({ unix: now.getTime(), utc: now.toUTCString() })
-});
-
-app.get("/api/:date", (req, res) => {
-  const paramsDate = req.params.date;
-  const invalidDate = "Invalid Date";
-  const date = parseInt(paramsDate) < 10000
-      ? new Date(paramsDate)
-      : new Date(parseInt(paramsDate))
-
-  date.toString() === invalidDate
-      ? res.json({ error: invalidDate })
-      : res.json({ unix: date.valueOf(), utc: date.toUTCString() });
-});
+app.get("/api/whoami", (req, res) => {
+  res.json({
+      "ipaddress": req.socket.remoteAddress,
+      "language": req.get('accept-language'),
+      "software": req.get('user-agent')
+  });
+})
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT || 3000, function () {
